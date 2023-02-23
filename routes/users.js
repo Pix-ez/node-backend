@@ -123,7 +123,7 @@ router.post('/login', async (req,res)=>{
     if(err){
       res.send({err: err});
     }
-    if(result.length > 0){
+    if(result){
       bcrypt.compare(password, result[0].password_hash, (error , response) =>{
         if(response){
           // console.log(response)
