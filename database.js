@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+
 
 
 
@@ -9,13 +9,15 @@ const mysql = require('mysql');
 //     password: '',
 //     database: 'dat'
 // })
+const mysql = require('mysql');
 
 //online server-
 var connection = mysql.createConnection({
-    host: 'bewfxmgl4pcxwh9d88n7-mysql.services.clever-cloud.com',
-    user: 'uvcgqdxreapswstc',
-    password: 'xuN5COOIEOfSCNEScwXm',
-    database: 'bewfxmgl4pcxwh9d88n7'
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE,
+    connectTimeout: process.env.TIMEOUT // or a higher value, in milliseconds
 })
 
 
