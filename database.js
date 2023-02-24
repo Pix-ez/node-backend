@@ -9,7 +9,7 @@
 //     password: '',
 //     database: 'dat'
 // })
-const mysql = require('mysql2');
+const mysql = require('mysql');
 
 //online server-
 var connection = mysql.createConnection({
