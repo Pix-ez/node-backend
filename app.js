@@ -33,7 +33,7 @@ const PORT = 3001;
 
 app.use(cors({
 	// origin:["http://localhost:3000"],
-	origin:["http://localhost:5173"],
+	origin:["data-pfcx5b1yn-pix-ez.vercel.app"],
 	methods:["GET", "POST", "DELETE"],
 	credentials: true,
 }))
