@@ -260,7 +260,7 @@ router.post('/forget-password', async (req, res) => {
           expiresIn: "2m",
         });
         
-        const link = `http://localhost:5173/set-pass/${oldUser[0].id}/${Buffer.from(token).toString('base64')}`;
+        const link = `https://data-pfcx5b1yn-pix-ez.vercel.app/set-pass/${oldUser[0].id}/${Buffer.from(token).toString('base64')}`;
         var transporter = nodemailer.createTransport({
           service: 'gmail',
           auth: {
