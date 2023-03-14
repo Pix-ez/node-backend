@@ -29,8 +29,8 @@ router.post('/newpr', (req, res)=>{
 
     if(data){
         try {
-        console.log(name)
-        console.log(desc)
+        // console.log(name)
+        // console.log(desc)
         
 
         db.query("INSERT INTO projects(name, description , user_id) VALUES (?, ?, ?);",

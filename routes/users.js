@@ -74,6 +74,33 @@ router.get('/getusers', (req, res) =>{
 // })
 
 //POST METHOD
+//contact-
+router.post('/contact', (req, res) =>{
+    
+  const adduser =`INSERT INTO contact(username, email, message) VALUES (?, ?, ?)`;
+  const user = req.body;
+  const username = user.username;
+  const email = user.email;
+  const message = user.message
+ 
+    if(user){
+      try {
+
+          db.query(adduser,[username, email ,message]);
+          res.json({msg: 'message submited'});
+          console.log("message submited")
+         
+      } catch (error) {
+          console.log(error);
+         
+          
+      }
+      
+  }
+
+  })
+ 
+
 //add user
 router.post('/register', (req, res) =>{
     
@@ -123,8 +150,8 @@ router.post('/login', async (req,res)=>{
     if(err){
       res.send({err: err});
     }
-    if(result){
-      console.log(result[0])
+    if(result.length>0){
+      // console.log(result[0])
       bcrypt.compare(password, result[0].password_hash, (error , response) =>{
         if(response){
           // console.log(response)

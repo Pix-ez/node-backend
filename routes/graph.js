@@ -56,6 +56,7 @@ router.get("/create/:id", async(req, res) => {
   let id =""
   let name = ""
   let desc = ""
+  let note = ""
 
   // const result = await db.query("SELECT * FROM projects WHERE id=?;", project_id);
 
@@ -69,9 +70,10 @@ router.get("/create/:id", async(req, res) => {
       id = result[0].file_id
       name = result[0].name
       desc = result[0].description
+      note = result[0].notes
       }
 
-  console.log(id , name , desc)
+  // console.log(result[0])
   try {
      // Get the file from Google Drive using the file ID
      const response = await google.drive({ version: "v3", auth }).files.get({
@@ -80,7 +82,7 @@ router.get("/create/:id", async(req, res) => {
     }, {
       responseType: 'stream',
     });
-     console.log(response.data)
+    //  console.log(response.data)
 
      let data = [];
       
@@ -89,7 +91,7 @@ router.get("/create/:id", async(req, res) => {
         .pipe(csv.parse({ headers: true }))
         .on("data", row => data.push(row))
         .on("end", () => {
-          res.json({data:data, name:name , desc:desc});
+          res.json({data:data, name:name , desc:desc, note:note});
         });
    
 

@@ -31,7 +31,7 @@ const uploadFile = async (fileObject, pname, uid) => {
     },
     fields: "id,name",
   });
-  console.log(`Uploaded file ${data.name} ${data.id}`);
+  // console.log(`Uploaded file ${data.name} ${data.id}`);
   db.query('UPDATE projects SET file_name = ?, file_id = ? WHERE user_id = ? AND name = ?', [data.name,data.id, uid, pname])
 };
 
@@ -55,5 +55,35 @@ router.post("/upload", upload.any(), async (req, res) => {
     res.send(f.message);
   }
 });
+
+
+router.post('/save', async (req, res)=>{
+  const note =req.body.note;
+  const name = req.body.name;
+
+  db.query('UPDATE projects SET notes= ? WHERE  name = ?',
+  [note, name], (err)=>{
+    if(err){
+      console.log(err)
+    }else{
+      console.log("saved")
+      res.json({status:"saved"})
+    }
+  })
+})
+
+// router.get('/save', async (req, res)=>{
+ 
+
+//   db.query('UPDATE projects SET notes= ? WHERE  name = ?',
+//   [note, name], (err)=>{
+//     if(err){
+//       console.log(err)
+//     }else{
+//       console.log("saved")
+//       res.json({status:"saved"})
+//     }
+//   })
+// })
 
 module.exports = router;
