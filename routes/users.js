@@ -265,7 +265,7 @@ router.post('/forget-password', async (req, res) => {
           service: 'gmail',
           auth: {
             user: 'talekarrahul111@gmail.com',
-            pass: 'vxtdtvhiardhwbeq'
+            pass: 'zrmvktccragsport'
           }
         });
         
@@ -386,6 +386,86 @@ router.post('/reset-password/:id/:token', async (req, res) => {
   });
 });
 
+router.post('/subscribe', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    db.query("SELECT * FROM user_info WHERE email = ?;", email, (err, oldUser) => {
+      if (err) {
+        res.send({ err: err });
+      }
+
+      if (oldUser.length > 0) {
+        const secret = JWT_SECRET + oldUser[0].password_hash;
+        const token = jwt.sign({ email: oldUser[0].email, id: oldUser[0].id }, secret, {
+          expiresIn: "2m",
+        });
+        
+       
+        var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'talekarrahul111@gmail.com',
+            pass: 'zrmvktccragsport'
+          }
+        });
+        
+        var mailOptions = {
+          from: 'datavisualize-no-reply@gmail.com',
+          to: email,
+          subject: 'New Update',
+          html: `
+          <html lang="en">
+          
+            <head>
+              <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
+            </head>
+            
+          
+            <body style="background-color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,Oxygen-Sans,Ubuntu,Cantarell,&quot;Helvetica Neue&quot;,sans-serif">
+              <table align="center" role="presentation" cellSpacing="0" cellPadding="0" border="0" width="100%" style="max-width:37.5em;margin:0 auto;padding:20px 0 48px">
+                <tr style="width:100%">
+                  <td><h1 style="margin-bottom: 4; padding: 5px; color: #5F51E8; font-weight: bolder; margin-left: 2px;" >
+                    Data Analysis Service
+                  </h1>
+                    <p style="font-size:16px;line-height:26px;margin:16px 0">Hi ${oldUser[0].username} 👋,</p>
+                    <p style="font-size:16px;line-height:26px;margin:16px 0">Now you are Subscribed to new updates from this site.</p>
+                    <table style="text-align:center" align="center" border="0" cellPadding="0" cellSpacing="0" role="presentation" width="100%">
+                      <tbody>
+                        <tr>
+                          <td><a target="_blank" style="background-color:#5F51E8;border-radius:3px;color:#fff;font-size:16px;text-decoration:none;text-align:center;display:inline-block;p-x:12px;p-y:12px;line-height:100%;max-width:100%;padding:12px 12px"><span><!--[if mso]><i style="letter-spacing: 12px;mso-font-width:-100%;mso-text-raise:18" hidden>&nbsp;</i><![endif]--></span><span style="background-color:#5F51E8;border-radius:3px;color:#fff;font-size:16px;text-decoration:none;text-align:center;display:inline-block;p-x:12px;p-y:12px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:9px"></span><span><!--[if mso]><i style="letter-spacing: 12px;mso-font-width:-100%" hidden>&nbsp;</i><![endif]--></span>To unsubscribed contact admin.</a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p style="font-size:16px;line-height:26px;margin:16px 0">From,<br />Rahul Talekar.</p>
+                    <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#cccccc;margin:20px 0" />
+                    <p style="font-size:12px;line-height:24px;margin:16px 0;color:#8898aa">India , Thane-Dombivli 421202.</p>
+                  </td>
+                </tr>
+              </table>
+            </body>
+          
+          </html>`
+        }
+        
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+        
+
+        res.json({ status: true });
+      } else {
+        return res.json({ status: false });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 
 module.exports = router;
